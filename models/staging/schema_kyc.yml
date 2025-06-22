@@ -1,8 +1,10 @@
 version: 2
 
 sources:
-  - name: raw
-    description: Raw data tables from source systems
+  - name: oriekyc
+    description: Raw data tables from source systems in ORIEKYC schema
+    schema: ORIEKYC
+    database: ORI_RAW_DB
     tables:
       - name: kyc_profile_audit
         description: |
@@ -29,11 +31,11 @@ sources:
             tests:
               - not_null
           - name: op_type
-            description: Operation type (INSERT, UPDATE, DELETE)
+            description: Operation type (I=INSERT, U=UPDATE, D=DELETE)
             tests:
               - not_null
               - accepted_values:
-                  values: ['INSERT', 'UPDATE', 'DELETE']
+                  values: ['I', 'U', 'D']
           - name: op_time
             description: Timestamp when the operation occurred
             tests:

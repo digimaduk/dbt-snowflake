@@ -1,9 +1,9 @@
 version: 2
 
 models:
-  - name: kyc_profile_current
+  - name: kyc_profile
     description: |
-      Production-ready incremental model that maintains the current state of KYC profiles.
+      Production KYC profile table that maintains the current state of KYC profiles.
       
       **Key Features:**
       - Processes only changed records since last run (incremental)

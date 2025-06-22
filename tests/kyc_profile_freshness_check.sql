@@ -3,7 +3,7 @@
 
 select
     count(*) as stale_records
-from {{ ref('kyc_profile_current') }}
+from {{ ref('kyc_profile') }}
 where updated_date < current_timestamp() - interval '15 minutes'
 
 -- If any records are older than 15 minutes, this indicates

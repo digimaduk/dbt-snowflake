@@ -25,7 +25,7 @@ with latest_audit_records as (
             partition by kyc_profile_id 
             order by op_time desc
         ) as rn
-    from {{ source('raw', 'kyc_profile_audit') }}
+    from {{ source('oriekyc', 'kyc_profile_audit') }}
     
     {% if is_incremental() %}
         -- Only process records that have been modified since last run
