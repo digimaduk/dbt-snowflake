@@ -1,0 +1,63 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw data tables from source systems
+    tables:
+      - name: customers
+        description: Raw customer data
+        columns:
+          - name: customer_id
+            description: Primary key for customers
+            tests:
+              - unique
+              - not_null
+          - name: email
+            description: Customer email address
+            tests:
+              - unique
+              - not_null
+      
+      - name: orders
+        description: Raw orders data
+        columns:
+          - name: order_id
+            description: Primary key for orders
+            tests:
+              - unique
+              - not_null
+          - name: customer_id
+            description: Foreign key to customers
+            tests:
+              - not_null
+              - relationships:
+                  to: source('raw', 'customers')
+                  field: customer_id
+
+models:
+  - name: stg_customers
+    description: Staged customer data with basic cleaning
+    columns:
+      - name: customer_id
+        description: Primary key for customers
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: Customer email address
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders
+    description: Staged orders data with basic cleaning
+    columns:
+      - name: order_id
+        description: Primary key for orders
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null

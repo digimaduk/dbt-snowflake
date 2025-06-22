@@ -1,0 +1,6 @@
+customer_id,first_name,last_name,email,segment
+1,John,Doe,john.doe@email.com,Premium
+2,Jane,Smith,jane.smith@email.com,Standard
+3,Bob,Johnson,bob.johnson@email.com,Premium
+4,Alice,Brown,alice.brown@email.com,Standard
+5,Charlie,Davis,charlie.davis@email.com,Basic

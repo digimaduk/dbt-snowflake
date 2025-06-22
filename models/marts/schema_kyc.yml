@@ -1,0 +1,49 @@
+version: 2
+
+models:
+  - name: kyc_profile_current
+    description: |
+      Production-ready incremental model that maintains the current state of KYC profiles.
+      
+      **Key Features:**
+      - Processes only changed records since last run (incremental)
+      - Handles INSERT, UPDATE, and DELETE operations
+      - Maintains latest state for each kyc_profile_id
+      - Excludes deleted records from final output
+      - Designed to run every 10 minutes
+      
+      **How it works:**
+      1. Identifies profiles that changed since last run
+      2. Gets the latest operation for each changed profile
+      3. Excludes profiles marked as deleted
+      4. Merges changes into the target table
+      
+      **Run frequency:** Every 10 minutes via scheduled job
+    columns:
+      - name: kyc_profile_id
+        description: Primary key for KYC profile - unique identifier
+        tests:
+          - unique
+          - not_null
+      - name: goldtier_id
+        description: Gold tier identifier for the profile
+      - name: cid
+        description: Customer identifier linking to customer master data
+      - name: party_id
+        description: Party identifier for regulatory and compliance tracking
+      - name: created_date
+        description: Initial creation timestamp of the profile
+        tests:
+          - not_null
+      - name: updated_date
+        description: |
+          Last modification timestamp of the profile.
+          This reflects when the profile data was last changed.
+        tests:
+          - not_null
+
+    meta:
+      owner: "data-engineering-team"
+      update_frequency: "10 minutes"
+      source_system: "kyc_profile_audit"
+      business_purpose: "Maintain current state of KYC profiles for real-time operations"

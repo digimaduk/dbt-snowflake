@@ -1,0 +1,63 @@
+version: 2
+
+models:
+  - name: stg_customers_sample
+    description: Sample staged customer data for testing
+    columns:
+      - name: customer_id
+        description: Primary key for customers
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: Customer email address
+        tests:
+          - unique
+          - not_null
+
+  - name: stg_orders_sample
+    description: Sample staged orders data for testing
+    columns:
+      - name: order_id
+        description: Primary key for orders
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Foreign key to customers
+        tests:
+          - not_null
+
+  - name: dim_customers_sample
+    description: Sample customer dimension table with order history and segmentation
+    columns:
+      - name: customer_id
+        description: Primary key for customers
+        tests:
+          - unique
+          - not_null
+      - name: email
+        description: Customer email address
+        tests:
+          - unique
+          - not_null
+      - name: total_orders
+        description: Total number of orders placed by customer
+        tests:
+          - not_null
+      - name: total_spent
+        description: Total amount spent by customer
+        tests:
+          - not_null
+      - name: customer_segment
+        description: Customer segmentation based on order history
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Never Ordered', 'One-time Customer', 'Regular Customer', 'VIP Customer']
+      - name: customer_status
+        description: Customer status based on recency of orders
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Active', 'At Risk', 'Inactive']

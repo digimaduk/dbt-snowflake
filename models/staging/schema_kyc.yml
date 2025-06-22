@@ -1,0 +1,66 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw data tables from source systems
+    tables:
+      - name: kyc_profile_audit
+        description: |
+          Audit table containing all changes to KYC profiles.
+          Each row represents a change operation (INSERT, UPDATE, DELETE).
+          Multiple rows can exist for the same kyc_profile_id showing the history of changes.
+        columns:
+          - name: kyc_profile_id
+            description: Primary key for KYC profile
+            tests:
+              - not_null
+          - name: goldtier_id
+            description: Gold tier identifier
+          - name: cid
+            description: Customer identifier
+          - name: party_id
+            description: Party identifier
+          - name: created_date
+            description: Initial creation date of the profile
+            tests:
+              - not_null
+          - name: updated_date
+            description: Last update date of the profile
+            tests:
+              - not_null
+          - name: op_type
+            description: Operation type (INSERT, UPDATE, DELETE)
+            tests:
+              - not_null
+              - accepted_values:
+                  values: ['INSERT', 'UPDATE', 'DELETE']
+          - name: op_time
+            description: Timestamp when the operation occurred
+            tests:
+              - not_null
+
+models:
+  - name: stg_kyc_profile_current
+    description: |
+      Staging model that extracts the current state of KYC profiles from the audit table.
+      This is a simplified version focused on getting the latest records.
+    columns:
+      - name: kyc_profile_id
+        description: Primary key for KYC profile
+        tests:
+          - unique
+          - not_null
+      - name: goldtier_id
+        description: Gold tier identifier
+      - name: cid
+        description: Customer identifier
+      - name: party_id
+        description: Party identifier
+      - name: created_date
+        description: Initial creation date of the profile
+        tests:
+          - not_null
+      - name: updated_date
+        description: Last update date of the profile
+        tests:
+          - not_null
