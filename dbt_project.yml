@@ -11,15 +11,15 @@ profile: 'dbt_poc'
 # These configurations specify where dbt should look for different types of files.
 # The `model-paths` config, for example, states that models in this project can be
 # found in the "models/" directory. You probably won't need to change these!
-model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["tests"]
-seed-paths: ["seeds"]
-macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
+model-paths: [ "models" ]
+analysis-paths: [ "analyses" ]
+test-paths: [ "tests" ]
+seed-paths: [ "seeds" ]
+macro-paths: [ "macros" ]
+snapshot-paths: [ "snapshots" ]
 
 target-path: "target"  # directory which will store compiled SQL files
-clean-targets:         # directories to be removed by `dbt clean`
+clean-targets: # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
 
@@ -28,18 +28,19 @@ clean-targets:         # directories to be removed by `dbt clean`
 
 models:
   dbt_poc:
-    # Config indicated by + and applies to all files under models/example/
-    staging:
-      +materialized: view
     marts:
       +materialized: table
 
-# Configuring seeds
-seeds:
-  dbt_poc:
-    +quote_columns: false
 
-# Configuring snapshots
-snapshots:
-  dbt_poc:
-    +target_schema: snapshots
+# Audit sync configurations
+vars:
+  audit_sync_configs:
+    kyc_profile:
+      source_table: "kyc_profile_audit"
+      target_table: "kyc_profile"
+      unique_key: "kyc_profile_id"
+      # columns auto-discovered from source table schema
+    kyc_profile_stg:
+      source_table: "kyc_profile_stg_audit"
+      target_table: "kyc_profile_stg"
+      unique_key: "kyc_profile_stg_id"
